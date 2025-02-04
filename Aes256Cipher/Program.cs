@@ -80,6 +80,20 @@ if (createKey)
     return;
 }
 
+if (encrypt)
+{
+    Cipher.EncryptSecuredJsonFields(filePath, key);
+    Console.WriteLine("Complete");
+    return;
+}
+
+if (decrypt)
+{
+    Cipher.DecryptSecuredJsonFields(filePath, key);
+    Console.WriteLine("Complete");
+    return;
+}
+
 void OutDamnedHelp()
 {
     Console.WriteLine("Creates a new Aes256 key or encrypts a file or decrypts a file. A key is required when encrypting or decrypting.\nWhen encrypting or decrypting a file, the application with modify the values found after 'CipherText:'. In the\nexample \"Connection_string\":\"CipherText:<data>\" just <data> will be changed.\n");

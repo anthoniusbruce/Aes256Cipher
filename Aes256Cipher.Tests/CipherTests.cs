@@ -88,6 +88,31 @@ namespace Aes256Cipher.Tests
         }
 
         [TestMethod]
+        public void ReplaceCipherText_MultipleReplacements_ReturnsMultpleToUpper()
+        {
+            var text = @"{
+                           ""tag"":""CipherText:upper me"",
+                           ""tag2"":""nothing"",
+                           ""tag3"":""CipherText:upper me too"",
+                           ""tag4"":""CipherText:and me""
+                         }";
+            var modifier = (string input, byte[] x) =>
+            {
+                return input.ToUpper();
+            };
+            var expected = @"{
+                           ""tag"":""CipherText:UPPER ME"",
+                           ""tag2"":""nothing"",
+                           ""tag3"":""CipherText:UPPER ME TOO"",
+                           ""tag4"":""CipherText:AND ME""
+                         }";
+
+            var actual = Cipher.ReplaceCipherText(text, Array.Empty<byte>(), modifier);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         [DataRow(@"{""tag"":""CipherText:""}")]
         [DataRow(@"{""tag"":""no tag""}")]
         [DataRow(@"{""tag"":""""}")]
