@@ -11,10 +11,10 @@ var createKey = false;
 var encrypt = false;
 var decrypt = false;
 var filePath = string.Empty;
-var keyName = string.Empty;
+var key = string.Empty;
 
 var filePathActive = false;
-var keyNameActive = false;
+var keyActive = false;
 foreach (var arg in args)
 {
     if (filePathActive)
@@ -22,10 +22,10 @@ foreach (var arg in args)
         filePath = arg;
         filePathActive = false;
     }
-    else if (keyNameActive)
+    else if (keyActive)
     {
-        keyName = arg;
-        keyNameActive = false;
+        key = arg;
+        keyActive = false;
     }
     else if (arg.ToLower() == "--help" || arg.ToLower() == "-h" || arg.ToLower() == "/h")
     {
@@ -47,9 +47,9 @@ foreach (var arg in args)
     {
         filePathActive = true;
     }
-    else if (arg.ToLower() == "--keyname" || arg.ToLower() == "-k" || arg.ToLower() == "/k")
+    else if (arg.ToLower() == "--key" || arg.ToLower() == "-k" || arg.ToLower() == "/k")
     {
-        keyNameActive = true;
+        keyActive = true;
     }
 }
 
@@ -66,9 +66,9 @@ if ((encrypt || decrypt) && string.IsNullOrWhiteSpace(filePath))
     return;
 }
 
-if ((encrypt || decrypt) && string.IsNullOrWhiteSpace(keyName))
+if ((encrypt || decrypt) && string.IsNullOrWhiteSpace(key))
 {
-    Console.WriteLine("--keyname is required for encrypt or decrypt");
+    Console.WriteLine("--key is required for encrypt or decrypt");
     OutDamnedHelp();
     return;
 }
@@ -77,14 +77,15 @@ if (createKey)
 {
     var newKey = Cipher.CreateNewKey();
     Console.WriteLine($"Key: {newKey}");
+    return;
 }
 
 void OutDamnedHelp()
 {
-    Console.WriteLine("Creates a new Aes256 key or encrypts a file or decrypts a file. When creating a new key of a key name is given,\nthe application will replace the environment variable value with the new key. When encrypting or decrypting a\nfile, the application with modify the values found after 'CipherText:'. In the example of\n\"Connection_string\":\"CipherText:<data>\" will encrypt/decrypt just <data>.\n");
-    Console.WriteLine("Aes256Cipher.exe create|encrypt|decrypt [--keyname|-k|/k \"key name\"] [--filename|-f|/f \"file path\"] [--help|-h|/h]\n");
+    Console.WriteLine("Creates a new Aes256 key or encrypts a file or decrypts a file. A key is required when encrypting or decrypting.\nWhen encrypting or decrypting a file, the application with modify the values found after 'CipherText:'. In the\nexample \"Connection_string\":\"CipherText:<data>\" just <data> will be changed.\n");
+    Console.WriteLine("Aes256Cipher.exe create|encrypt|decrypt [--key|-k|/k \"key\"] [--filename|-f|/f \"file path\"] [--help|-h|/h]\n");
     Console.WriteLine("    create|encrypt|decrypt\tThe action to be taken, either create or encrypt or decrypt");
-    Console.WriteLine("    --keyname \"key name\"\tThe name of the environment variable where the key resides, not used\n\t\t\t\t    for create but required for encrypt or decrypt");
+    Console.WriteLine("    --key \"key\"\tThe key that will encrypt or decrypt the given file");
     Console.WriteLine("    --filename \"file name\"\tThe file name and path with the data to be encrypted or decrypted");
-    Console.WriteLine("    --help\t\t\tThis help");
+    Console.WriteLine("    --help\t\t\tThis help\n");
 }
