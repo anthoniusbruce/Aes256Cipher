@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aes256Cipher", "Aes256Cipher.csproj", "{4DB9D171-CB31-44D5-BF0F-5087501F0DAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aes256Cipher", "Aes256Cipher\Aes256Cipher.csproj", "{4DB9D171-CB31-44D5-BF0F-5087501F0DAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aes256Cipher.Tests", "Aes256Cipher.Tests\Aes256Cipher.Tests.csproj", "{90265CEA-F35E-410B-834A-B27403A0B364}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{4DB9D171-CB31-44D5-BF0F-5087501F0DAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DB9D171-CB31-44D5-BF0F-5087501F0DAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DB9D171-CB31-44D5-BF0F-5087501F0DAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90265CEA-F35E-410B-834A-B27403A0B364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90265CEA-F35E-410B-834A-B27403A0B364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90265CEA-F35E-410B-834A-B27403A0B364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90265CEA-F35E-410B-834A-B27403A0B364}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
