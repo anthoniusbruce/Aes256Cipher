@@ -75,21 +75,21 @@ if ((encrypt || decrypt) && string.IsNullOrWhiteSpace(key))
 
 if (createKey)
 {
-    var newKey = Cipher.CreateNewKey();
+    var newKey = EncryptionDecryption.CreateNewKey();
     Console.WriteLine($"Key: {newKey}");
     return;
 }
 
 if (encrypt)
 {
-    Cipher.EncryptSecuredJsonFields(filePath, key);
+    EncryptionDecryption.EncryptSecuredJsonFields(filePath, key);
     Console.WriteLine("Complete");
     return;
 }
 
 if (decrypt)
 {
-    Cipher.DecryptSecuredJsonFields(filePath, key);
+    EncryptionDecryption.DecryptSecuredJsonFields(filePath, key);
     Console.WriteLine("Complete");
     return;
 }
