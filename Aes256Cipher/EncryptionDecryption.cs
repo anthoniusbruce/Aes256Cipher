@@ -17,7 +17,7 @@ namespace Aes256Cipher
             var jsonFile = new FileInfo(fileName);
             var json = File.ReadAllText(jsonFile.FullName);
             var byteKey = Convert.FromBase64String(key);
-            var result = ReplaceCipherText(json, byteKey, Cipher.Encrypt);
+            var result = ReplaceCipherText(json, byteKey, ShirtStormCommon.Cipher.Aes256Cipher.Encrypt);
 
             File.WriteAllText(jsonFile.FullName, result);
         }
@@ -27,7 +27,7 @@ namespace Aes256Cipher
             var jsonFile = new FileInfo(fileName);
             var json = File.ReadAllText(jsonFile.FullName);
             var byteKey = Convert.FromBase64String(key);
-            var result = ReplaceCipherText(json, byteKey, Cipher.Decrypt);
+            var result = ReplaceCipherText(json, byteKey, ShirtStormCommon.Cipher.Aes256Cipher.Decrypt);
 
             File.WriteAllText(jsonFile.FullName, result);
         }
