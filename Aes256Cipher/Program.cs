@@ -1,4 +1,6 @@
 ﻿using Aes256Cipher;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 
 if (args.Length == 0)
 {
@@ -11,21 +13,14 @@ var createKey = false;
 var encrypt = false;
 var decrypt = false;
 var filePath = string.Empty;
-var key = string.Empty;
 
 var filePathActive = false;
-var keyActive = false;
 foreach (var arg in args)
 {
     if (filePathActive)
     {
         filePath = arg;
         filePathActive = false;
-    }
-    else if (keyActive)
-    {
-        key = arg;
-        keyActive = false;
     }
     else if (arg.ToLower() == "--help" || arg.ToLower() == "-h" || arg.ToLower() == "/h")
     {
@@ -47,10 +42,6 @@ foreach (var arg in args)
     {
         filePathActive = true;
     }
-    else if (arg.ToLower() == "--key" || arg.ToLower() == "-k" || arg.ToLower() == "/k")
-    {
-        keyActive = true;
-    }
 }
 
 if (requestHelp)
@@ -66,13 +57,6 @@ if ((encrypt || decrypt) && string.IsNullOrWhiteSpace(filePath))
     return;
 }
 
-if ((encrypt || decrypt) && string.IsNullOrWhiteSpace(key))
-{
-    Console.WriteLine("--key is required for encrypt or decrypt");
-    OutDamnedHelp();
-    return;
-}
-
 if (createKey)
 {
     var newKey = EncryptionDecryption.CreateNewKey();
@@ -80,26 +64,29 @@ if (createKey)
     return;
 }
 
+var kvUri = "https://shirt-storm-vault.vault.azure.net/";
+var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
+var keySecret = client.GetSecret("appsettingscipher");
+
 if (encrypt)
 {
-    EncryptionDecryption.EncryptSecuredJsonFields(filePath, key);
+    EncryptionDecryption.EncryptSecuredJsonFields(filePath, keySecret.Value.Value);
     Console.WriteLine("Complete");
     return;
 }
 
 if (decrypt)
 {
-    EncryptionDecryption.DecryptSecuredJsonFields(filePath, key);
+    EncryptionDecryption.DecryptSecuredJsonFields(filePath, keySecret.Value.Value);
     Console.WriteLine("Complete");
     return;
 }
 
 void OutDamnedHelp()
 {
-    Console.WriteLine("Creates a new Aes256 key or encrypts a file or decrypts a file. A key is required when encrypting or decrypting.\nWhen encrypting or decrypting a file, the application with modify the values found after 'CipherText:'. In the\nexample \"Connection_string\":\"CipherText:<data>\" just <data> will be changed.\n");
-    Console.WriteLine("Aes256Cipher.exe create|encrypt|decrypt [--key|-k|/k \"key\"] [--filename|-f|/f \"file path\"] [--help|-h|/h]\n");
+    Console.WriteLine("Creates a new Aes256 key or encrypts a file or decrypts a file. The key for encrypting and decrypting is in the secret vault.\nWhen encrypting or decrypting a file, the application with modify the values found after 'CipherText:'. In the\nexample \"Connection_string\":\"CipherText:<data>\" just <data> will be changed.\n");
+    Console.WriteLine("Aes256Cipher.exe create|encrypt|decrypt [--filename|-f|/f \"file path\"] [--help|-h|/h]\n");
     Console.WriteLine("    create|encrypt|decrypt\tThe action to be taken, either create or encrypt or decrypt");
-    Console.WriteLine("    --key \"key\"\tThe key that will encrypt or decrypt the given file");
     Console.WriteLine("    --filename \"file name\"\tThe file name and path with the data to be encrypted or decrypted");
     Console.WriteLine("    --help\t\t\tThis help\n");
 }
