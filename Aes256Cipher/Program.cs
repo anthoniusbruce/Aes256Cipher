@@ -64,7 +64,7 @@ if (createKey)
     return;
 }
 
-var kvUri = "https://shirt-storm-vault.vault.azure.net/";
+var kvUri = "https://shirt-storm-vaults.vault.azure.net/";
 var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
 var keySecret = client.GetSecret("appsettingscipher");
 
